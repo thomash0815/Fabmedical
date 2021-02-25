@@ -19,15 +19,18 @@ on:
 # Environment variables are defined so that they can be used throughout the job definitions.
 env:
  imageRepository: 'content-web'
+ imageRepository_api: 'content-api'
  resourceGroupName: 'fabmedical-318213'
  containerRegistryName: 'acr318213'
  containerRegistry: 'acr318213.azurecr.io'
  dockerfilePath: './content-web'
+ dockerfilePath_api: './content-api'
  tag: '${{ github.run_id  }}'
 
 # Jobs define the actions that take place when code is pushed to the master branch
 jobs:
 
+#web
  build-and-publish-docker-image:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
@@ -55,6 +58,35 @@ jobs:
         tags: |
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
+
+#api
+ build-and-publish-docker-image:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repo
+    - uses: actions/checkout@master
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to ACR
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.containerRegistry }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build and push an image to container registry
+      uses: docker/build-push-action@v2
+      with:
+        context: ${{ env.dockerfilePath_api  }}
+        file: "${{ env.dockerfilePath_api }}/Dockerfile"
+        pull: true
+        push: true
+        tags: |
+          ${{ env.containerRegistry }}/${{ env.imageRepository_api }}:${{ env.tag }}
+          ${{ env.containerRegistry }}/${{ env.imageRepository_api }}:latest
 
  build-and-push-helm-chart:
     name: Build and Push Helm Chart
