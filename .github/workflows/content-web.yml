@@ -60,7 +60,7 @@ jobs:
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
 
 #api
- build-and-publish-docker-image:
+ build-and-publish-docker-image-api:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
