@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Public IP address
-IP="http://20.39.41.167/"
+IP="20.39.41.167"
 
 # Name to associate with public IP address
 DNSNAME="fabmedical-318699-ingress"
