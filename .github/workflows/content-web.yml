@@ -145,12 +145,13 @@ jobs:
       env:
         HELM_EXPERIMENTAL_OCI: 1
 
+      #unter run, ursprünglich: helm upgrade web ./upgrade/web
+      # vermutlich deswegen läuft die pipe nicht ohne extra install vorher (helm install web ./web im ->im charts dir)
     - name: Helm Upgrade
       run: |
         helm registry login ${{ env.containerRegistry }} --username ${{ secrets.ACR_USERNAME }} --password ${{ secrets.ACR_PASSWORD }}
         helm chart pull ${{ env.containerRegistry }}/helm/content-web:v${{ env.tag }}
-        helm chart export ${{ env.containerRegistry }}/helm/content-web:v${{ env.tag }} --destination ./upgrade
-        helm upgrade web ./upgrade/web
+        helm chart export ${{ env.containerRegistry }}/helm/content-web:v${{ env.tag }} --destination ./upgrade        
       env:
         KUBECONFIG: './kubeconfig'
         HELM_EXPERIMENTAL_OCI: 1
