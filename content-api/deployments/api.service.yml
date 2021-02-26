@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: api
+  namespace: default
+  selfLink: /api/v1/namespaces/default/services/api
+  uid: bdea23b2-0e13-449e-a681-fbf4933af9c2
+  creationTimestamp: '2021-02-25T18:39:38Z'
+  labels:
+    k8s-app: api
+spec:
+  ports:
+    - name: tcp-3001-3001-k8vj9
+      protocol: TCP
+      port: 3001
+      targetPort: 3001
+  selector:
+    k8s-app: api
+  #clusterIP: 10.0.153.18
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}
